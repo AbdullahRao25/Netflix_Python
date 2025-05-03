@@ -1,4 +1,3 @@
-
 # 🎬 Movie Metadata Cleaning & Exploratory Analysis
 
 Welcome to the **Movie Metadata Cleaning & Analysis** project!  
@@ -72,77 +71,69 @@ The original dataset `movies.csv` includes the following features:
 
 Each transformation step is implemented systematically to ensure reproducibility and traceability.
 
-### 📌 1. Load Dataset
+### 1. Load Dataset
 - Loaded using `pd.read_csv()`.
 - Quick overview with `.head()` and `.info()`.
 
-### 📌 2. Null Value Analysis
+### 2. Null Value Analysis
 - Calculated percentage of nulls using:
-  ```python
-  df.isnull().mean() * 100
+```python
+df.isnull().mean() * 100
 
-  📌 3. Drop or Impute
-Dropped rows with nulls in critical fields like:
+## 3. Drop or Impute
 
-title
+> Dropped rows with nulls in critical fields like title and overview.
 
-overview
+> Imputed numeric fields (vote_count, vote_average, popularity) with mode.
 
-Imputed numeric fields (vote_count, vote_average, popularity) with mode.
+## 4. Convert Numeric Fields
 
-📌 4. Convert Numeric Fields
-popularity, vote_count, vote_average converted using:
+Converted string-formatted numeric fields using:
 
-python
-Copy
-Edit
 pd.to_numeric(df["col"], errors="coerce")
-Dropped rows where conversions failed (invalid formats).
+Dropped rows where conversions failed.
 
-📌 5. Date Parsing
+## 5. Date Parsing
+
 Converted release_date into datetime using:
 
-python
-Copy
-Edit
 pd.to_datetime(df['release_date'], errors='coerce')
+
 Extracted year into a new column:
 
-python
-Copy
-Edit
 df['year'] = df['release_date'].dt.year
-📌 6. Drop Irrelevant or Corrupt Records
-Removed rows with:
 
-Missing or invalid release_date
+## 6. Drop Irrelevant or Corrupt Records
 
-vote_average > 10 (impossible scores)
+> Removed rows with:
 
-Negative or zero vote_count
+> Missing or invalid release_date
 
-📌 7. Duplicates Check
-Checked for duplicate rows:
+> vote_average > 10 (invalid)
 
-python
-Copy
-Edit
+> Negative or zero vote_count
+
+## 7. Duplicates Check
+
+Checked for duplicates:
+
 df.duplicated().sum()
 Removed if any (result: zero duplicates found)
 
-📊 Key Insights
-Here are some initial insights uncovered after cleaning:
+#📊 Key Insights
 
-🎥 General Stats
-Total valid movies after cleaning: 9,827
+## 🎥 General Stats
 
-Average movie rating: 6.0
+> Total valid movies after cleaning: 9,827
 
-Popularity ranges from ~13 to over 5000
+> Average movie rating: 6.0
 
-Most common original language: English (en)
+> Popularity ranges from ~13 to over 5,000
 
-🧹 Null Handling Summary
+> Most common original language: English (en)
+
+# 🧹 Null Handling Summary
+
 Column	Original Null %	Cleaning Action
 title	~0.03%	Dropped
 overview	~0.01%	Dropped
@@ -152,38 +143,35 @@ vote_average	0.11%	Imputed (mode)
 release_date	~0.7%	Dropped (invalid)
 
 📅 Yearly Trends
+
 Earliest valid movie: 1902
 
 Most data points concentrate between 1980–2020
 
 Common missing dates were due to parsing errors or placeholder values
 
-📌 File Structure
-bash
-Copy
-Edit
+# 📌 File Structure
+
 movie-data-cleaning/
 ├── movie_cleaning.ipynb       # Main notebook with all analysis steps
 ├── movies.csv                 # Original dataset
 ├── cleaned_movies.csv         # Final cleaned data (optional output)
 ├── README.md                  # You're here!
-🚀 How to Run the Project
-📋 Prerequisites
+
+# 🚀 How to Run the Project
+
+##📋 Prerequisites
+
 Make sure Python and pip are installed. Then, install the required packages:
 
-bash
-Copy
-Edit
 pip install pandas numpy matplotlib seaborn jupyter
-🧪 Run Instructions
+
+##🧪 Run Instructions
+
 Clone or download this repository.
 
 Launch Jupyter Notebook:
 
-bash
-Copy
-Edit
 jupyter notebook
 Open and run movie_cleaning.ipynb step-by-step.
-
 
