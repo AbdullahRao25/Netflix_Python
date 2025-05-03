@@ -1,177 +1,84 @@
-# 🎬 Movie Metadata Cleaning & Exploratory Analysis
+# Movie Database Analysis
 
-Welcome to the **Movie Metadata Cleaning & Analysis** project!  
-This project focuses on **data wrangling, preprocessing, and insight extraction** from a raw movie dataset. The dataset contains metadata such as popularity, user ratings, genres, and release dates for thousands of movies.  
-The primary goal is to make the dataset **clean, analyzable, and machine-learning ready** by addressing missing values, correcting data types, and uncovering initial patterns.
+This project involves cleaning, processing, and analyzing a movie dataset to derive insights and visualize movie popularity and ratings over time. The dataset contains information about various movies, such as their release date, title, popularity, vote count, and average vote.
 
----
+## Project Overview
 
-## 📦 Table of Contents
+In this project, we:
 
-- [📄 Project Overview](#-project-overview)  
-- [📁 Dataset Description](#-dataset-description)  
-- [🛠️ Tools & Technologies](#-tools--technologies)  
-- [🔍 Data Cleaning Process](#-data-cleaning-process)  
-- [📊 Key Insights](#-key-insights)  
-- [📌 File Structure](#-file-structure)  
-- [🚀 How to Run the Project](#-how-to-run-the-project)  
-- [📈 Future Improvements](#-future-improvements)  
-- [🙋‍♂️ Contact](#-contact)
+- Cleaned and processed a movie dataset with missing values and inconsistencies.
+- Performed exploratory data analysis (EDA) to understand movie trends.
+- Visualized the distribution of movie attributes such as popularity, vote count, and vote average.
+- Categorized movies based on their popularity and rating into different grade categories.
 
----
+## Dataset
 
-## 📄 Project Overview
+The dataset used in this project is named `mymoviedb.csv`, and it contains the following columns:
 
-This project addresses the common problems faced in real-world movie datasets:
+- `Release_Date`: The release date of the movie.
+- `Title`: The name of the movie.
+- `Overview`: A brief description of the movie plot.
+- `Popularity`: A measure of how popular the movie is.
+- `Vote_Count`: The number of votes the movie received.
+- `Vote_Average`: The average rating of the movie.
+- `Original_Language`: The language in which the movie was originally released.
+- `Genre`: The genres of the movie (e.g., Action, Adventure, Drama).
+- `Poster_Url`: The URL for the movie poster.
+- `Year_of_Release`: The year the movie was released.
 
-- Inconsistent data types (e.g., numeric values stored as strings)  
-- Null values in essential fields  
-- Mixed or malformed dates  
-- Redundant data or duplicates  
-- Lack of derived features like `year` or `language group`
+## Installation
 
-By performing **robust data cleaning and transformation**, we prepare this dataset for further tasks such as:
+1. Clone the repository:
 
-- Descriptive statistics  
-- Time series trend analysis  
-- Genre-based segmentation  
-- Machine learning models (e.g., recommendation systems)
+    ```bash
+    git clone https://github.com/yourusername/moviedb-analysis.git
+    ```
 
----
+2. Install the required Python libraries:
 
-## 📁 Dataset Description
+    ```bash
+    pip install -r requirements.txt
+    ```
 
-The original dataset `movies.csv` includes the following features:
+3. Ensure you have the dataset (`mymoviedb.csv`) in the appropriate directory.
 
-| Column Name         | Description                                           |
-|---------------------|-------------------------------------------------------|
-| `title`             | Name of the movie                                     |
-| `overview`          | Short summary/description of the movie                |
-| `popularity`        | Popularity score (numeric, sometimes string-formatted)|
-| `vote_count`        | Number of votes the movie received                    |
-| `vote_average`      | Average rating score (0–10 scale)                     |
-| `original_language` | Language code (e.g., `en`, `fr`)                      |
-| `genre`             | Movie genre(s)                                        |
-| `poster_path`       | URL to the movie poster image                         |
-| `release_date`      | Movie's release date in varying formats               |
+## Usage
 
----
+To run the project and perform the analysis:
 
-## 🛠️ Tools & Technologies
+1. Clone the repository and navigate to the project directory.
+2. Run the following Python script:
 
-- **Python 3.10+**  
-- **Pandas** – data manipulation  
-- **NumPy** – numerical processing  
-- **Matplotlib & Seaborn** – data visualization  
-- **Jupyter Notebook** – interactive development and visualization  
+    ```bash
+    python movie_analysis.py
+    ```
 
----
+## Files
 
-## 🔍 Data Cleaning Process
+- `movie_analysis.py`: The main Python script containing the data cleaning, analysis, and visualization code.
+- `mymoviedb.csv`: The raw movie dataset.
+- `requirements.txt`: A list of required Python libraries for the project.
+- `README.md`: This file.
 
-Each transformation step is implemented systematically to ensure reproducibility and traceability.
+## Data Cleaning Process
 
-### 1. Load Dataset
-- Loaded using `pd.read_csv()`.
-- Quick overview with `.head()` and `.info()`.
+- Removed rows with missing values in critical columns like `Title` and `Overview`.
+- Filled missing numerical values (`Popularity`, `Vote_Count`, `Vote_Average`) with the most frequent values using `SimpleImputer` from Scikit-Learn.
+- Converted columns such as `Popularity`, `Vote_Count`, and `Vote_Average` to appropriate numerical types.
+- Extracted the year of release from the `Release_Date` column and added it as a new feature (`Year_of_Release`).
+- Created a new `Popularity_Grade` column to categorize movies based on their `Vote_Average`.
 
-### 2. Null Value Analysis
-- Calculated percentage of nulls using:
-```python
-df.isnull().mean() * 100
+## Visualizations
 
-## 3. Drop or Impute
+Several visualizations were generated, including:
 
-> Dropped rows with nulls in critical fields like title and overview.
+- Distribution of `Popularity`, `Vote_Count`, and `Vote_Average` using histograms and boxplots.
+- Count of movies categorized by their popularity grade (`Unpopular`, `Below_Average`, `Average`, `Above_Average`, `Popular`).
 
-> Imputed numeric fields (vote_count, vote_average, popularity) with mode.
+## Contributing
 
-## 4. Convert Numeric Fields
+Feel free to fork the repository and submit pull requests if you have any improvements or new ideas for the analysis.
 
-Converted string-formatted numeric fields using:
+## License
 
-pd.to_numeric(df["col"], errors="coerce")
-Dropped rows where conversions failed.
-
-## 5. Date Parsing
-
-Converted release_date into datetime using:
-
-pd.to_datetime(df['release_date'], errors='coerce')
-
-Extracted year into a new column:
-
-df['year'] = df['release_date'].dt.year
-
-## 6. Drop Irrelevant or Corrupt Records
-
-> Removed rows with:
-
-> Missing or invalid release_date
-
-> vote_average > 10 (invalid)
-
-> Negative or zero vote_count
-
-## 7. Duplicates Check
-
-Checked for duplicates:
-
-df.duplicated().sum()
-Removed if any (result: zero duplicates found)
-
-#📊 Key Insights
-
-## 🎥 General Stats
-
-> Total valid movies after cleaning: 9,827
-
-> Average movie rating: 6.0
-
-> Popularity ranges from ~13 to over 5,000
-
-> Most common original language: English (en)
-
-# 🧹 Null Handling Summary
-
-Column	Original Null %	Cleaning Action
-title	~0.03%	Dropped
-overview	~0.01%	Dropped
-popularity	0.11%	Imputed (mode)
-vote_count	0.11%	Imputed (mode)
-vote_average	0.11%	Imputed (mode)
-release_date	~0.7%	Dropped (invalid)
-
-📅 Yearly Trends
-
-Earliest valid movie: 1902
-
-Most data points concentrate between 1980–2020
-
-Common missing dates were due to parsing errors or placeholder values
-
-# 📌 File Structure
-
-movie-data-cleaning/
-├── movie_cleaning.ipynb       # Main notebook with all analysis steps
-├── movies.csv                 # Original dataset
-├── cleaned_movies.csv         # Final cleaned data (optional output)
-├── README.md                  # You're here!
-
-# 🚀 How to Run the Project
-
-##📋 Prerequisites
-
-Make sure Python and pip are installed. Then, install the required packages:
-
-pip install pandas numpy matplotlib seaborn jupyter
-
-##🧪 Run Instructions
-
-Clone or download this repository.
-
-Launch Jupyter Notebook:
-
-jupyter notebook
-Open and run movie_cleaning.ipynb step-by-step.
-
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
